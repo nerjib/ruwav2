@@ -1,0 +1,44 @@
+#components-layout-demo-side .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+    
+  }
+  
+  /* .site-layout .site-layout-background {
+    background: #fff;
+  }
+  
+  .site-layout-background {
+    background: #fff;
+  } */
+  
+  .ant-menu-item-selected {
+    background-color: #fdece5 !important;
+    color: #ff6700 !important;
+  }
+  
+  .ant-menu-item-selected .ant-menu-title-content {
+    color: #ff6700 !important;
+  }
+  
+  .ant-menu-title-content {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000000;
+  }
+  .ant-menu-item-only-child .ant-menu-title-content {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  
+  .ant-layout-sider-trigger {
+    background: #ff6700 !important;
+  }
+  
