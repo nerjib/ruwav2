@@ -11,6 +11,7 @@ import {
   import { Bar } from 'react-chartjs-2';
   import { baseUrl, httpGet } from '../services/https';
 import Layout from '../components/Layout'
+import axios from 'axios';
   
   ChartJS.register(
     CategoryScale,
@@ -26,17 +27,22 @@ import Layout from '../components/Layout'
 
 const HomePage = () => {
     const [projects, setProjects] = React.useState([]);
-    const [projectData, setProjectData] = useState([
-        { status: 'Completed', count: 15 },
-        { status: 'In Progress', count: 10 },
-        { status: 'On Hold', count: 5 },
-        { status: 'Not Started', count: 3 },
-      ]);
-  const [chatData, setChatData] = useState([
-    { category: 'Handpump Borehole', count: 50 },
-    { category: 'Solar Motorized Borehole', count: 30 },
-    { category: 'VIP Latrines', count: 20 },
-  ]);
+    const [projectData, setProjectData] = useState([]);
+  const [chatData, setChatData] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/projects/stats`); // Replace with your actual API endpoint
+        setProjectData(response.data?.stat);
+        setChatData(response?.data?.projects)
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
     const getProjects = async () => {
         const res = await httpGet(`${baseUrl}/projects`)
@@ -74,7 +80,7 @@ const HomePage = () => {
       };
     
       const chatCounts = {
-        labels: chatData.map((data) => data.category),
+        labels: chatData.map((data) => data.title),
         datasets: [
           {
             label: 'Chat Interactions',
@@ -108,7 +114,22 @@ const HomePage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Example: Quick Stats (replace with actual data) */}
-        <div className="bg-blue-100 p-4 rounded-lg">
+        {projectData?.map(e => 
+            <div key={e?.status} className={`bg-${
+                e?.status ==='ALL'
+                ?'blue'
+                : e?.status ==='Completed'
+                ?'green'
+                :  e?.status ==='Ongoing'
+                ?'yellow'
+                :  e?.status ==='Abandoned'
+                ? 'blue'
+                :''}-100 p-4 rounded-lg`}>
+            <h2 className="text-xl font-bold">{e?.status} Projects</h2>
+            <p className="text-2xl font-bold">{e?.count}</p>
+          </div>
+        )}
+        {/* <div className="bg-blue-100 p-4 rounded-lg">
           <h2 className="text-xl font-bold">Total Projects</h2>
           <p className="text-2xl font-bold">15</p>
         </div>
@@ -120,6 +141,10 @@ const HomePage = () => {
           <h2 className="text-xl font-bold">Ongoing Projects</h2>
           <p className="text-2xl font-bold">7</p>
         </div>
+        <div className="bg-yellow-100 p-4 rounded-lg">
+          <h2 className="text-xl font-bold">Abandoned Projects</h2>
+          <p className="text-2xl font-bold">7</p>
+        </div> */}
       </div>
       <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Project Analytics</h2>

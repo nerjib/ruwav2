@@ -9,6 +9,8 @@ import ReportsPage from './pages/reports';
 // import MapPage from './pages/MapPage';
 import ProjectDetailsPage from './pages/projectsDetails';
 import AddProjectPage from './pages/addNewProject';
+import DailyMap from './pages/dailyMap';
+import AllMap from './pages/allmaps';
 
 
 function App() {
@@ -23,7 +25,9 @@ function App() {
             <Route path="/projects/new" element={<AddProjectPage />} />
             <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
             <Route path="/reports" element={<ReportsPage />} />
-            {/* <Route path="/map" element={<MapPage />} /> */}
+            <Route path="/map" element={<DailyMap />} />
+            <Route path="/maps" element={<AllMap />} />
+
           </Routes>
         </div>
       </div>

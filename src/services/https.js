@@ -26,6 +26,7 @@ export const httpPost = async (url, postBody, isNotAuth) => {
             'content-type': 'application/json',
             'CLIENT-TYPE': CLIENT_TYPE,
             'CLIENT-ID': CLIENT_ID,
+            Authorization: `${localStorage.token}`
           },
         }
     );
