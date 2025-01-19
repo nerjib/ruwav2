@@ -1,24 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, GeoJSON } from "react-leaflet";
 import Layout from '../components/Layout'
 import MapData from './kad.json'
+import { baseUrl } from "../services/https";
+import axios from "axios";
 
 const ODFMap = () => {
+    const [lgStat1, setLgStat] = useState({});
+    const odfStat = {
+        Igabi: 80,
+        Chikun: 100,
+        'Birnin-Gwari': 30,
+        Lere: 50,
+        Kudan: 60,
+        Kauru: 70,
+        Kachia: 30,
+        Giwa: 10,
+        Soba:20,
+        Chikun: 40,
+        Jaba: 90
+    }
+    let lgStat ={};
+    useEffect(() => {
+        const fetchProjects = async () => {
+          try {
+            const response = await axios.get(`${baseUrl}/odf`); // Replace with your actual API endpoint
+            // setProjects(response.data);
+            let data ={};
+            response?.data?.map(e=> {
+                console.log({e})
+                data = {...data, [e?.lga]: Math.floor((e?.no_of_certified/e?.no_of_communities)*100) }
+            })
+            setLgStat(data)
+            lgStat = data
+            console.log(data);
+          } catch (error) {
+            console.error('Error fetching projects:', error);
+          }
+        };
+    
+        fetchProjects();
+      }, []);
+
 
     const handleOnEach = (counter, layer) =>{
-        console.log({counter: counter})
-        layer.bindPopup(counter?.properties?.admin2Name)
-        layer.options.fillOpacity = Math.random();
-        layer.on({
-            click: (event) => {
-                event.target.setStyle({
-                    color: 'green',
-                    fillColor: 'yellow'
-                })
-            }
-        })
+        // console.log({counter: counter})
+        let odfVal = counter?.odf
+        // console.log({odfVal})
+        layer.bindPopup(counter?.properties?.admin2Name + 'Certified communities:' + lgStat[counter?.properties?.admin2Name] ?? 0)
+        layer.options.fillColor = 
+        lgStat[counter?.properties?.admin2Name] > 69
+        ? 'green'
+        : lgStat[counter?.properties?.admin2Name] >= 50
+        ? 'yellow'
+        : 'red'
+        layer.options.fillOpacity = (lgStat[counter?.properties?.admin2Name] > 69? lgStat[counter?.properties?.admin2Name]/100 :(1- ((lgStat[counter?.properties?.admin2Name])/100)))  ;
+
+        // layer.on({
+        //     click: (event) => {
+        //         // layer.bindPopup(counter?.properties?.admin2Name + 'Certified communities:' + counter?.odf)
+
+        //         event.target.setStyle({
+        //             color: 'green',
+        //             fillColor: 'yellow'
+        //         })
+        //     }
+        // })
     }
+   
     return(
     <Layout>
     <div>

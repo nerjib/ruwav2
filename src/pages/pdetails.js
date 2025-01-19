@@ -5,7 +5,7 @@ import { Modal } from 'react-bootstrap'; // Import Modal from react-bootstrap
 import { baseUrl } from '../services/https';
 import Layout from '../components/Layout'
 
-const ProjectDetailsPage = () => {
+const ProjectDetailsPageAdmin = () => {
   const { projectId } = useParams();
   const [project, setProject] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -106,14 +106,14 @@ const ProjectDetailsPage = () => {
       <p>LGA: {project.lga}</p>
       <p>Contractor: {project.contractor}</p>
       <p>Status: {project.status}</p>
-      <p>longitude: {project.longitude ?? 'N/A'}</p>
-      <p>latitude: {project.latitude ?? 'N/A'}</p>
-      {/* <button 
+      <p>longitude <input value={long ?? project.longitude} onChange={(e) => setLong(e.target.value)} /></p>
+      <p>latitude <input value={lat ?? project.latitude} onChange={(e) => setLat(e.target.value)} /></p>
+      <button 
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
         onClick={() => handleUpdate()}
       >
         Update GPS
-      </button> */}
+      </button>
       {/* Add more project details as needed */}
 
       <button 
@@ -188,4 +188,4 @@ const ProjectDetailsPage = () => {
   );
 };
 
-export default ProjectDetailsPage;
+export default ProjectDetailsPageAdmin;

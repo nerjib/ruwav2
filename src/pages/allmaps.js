@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import ico from '../assets/192.png'
 import hpbhIcon from '../assets/hpbhmarker.png'
 import smbIcon from '../assets/smbh.png'
 import Layout from '../components/Layout'
 import GoogleMapReact from 'google-map-react';
+import axios from 'axios';
+import { baseUrl } from '../services/https';
 
 const mapContainerStyle = {
   height: "400px",
@@ -12,8 +14,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: 9.125804,
-  lng: 7.363717
+  lat: 10.521175,
+  lng: 7.4268829
 };
 
 const gpsCoordinates = [
@@ -24,7 +26,7 @@ const gpsCoordinates = [
 ];
 
 const AllMap = () => {
-
+const [coordinates, setCordinates] = useState([]);
     // const Marker = ({text, id}) => {
     //     return (
     //           <div>         
@@ -32,16 +34,30 @@ const AllMap = () => {
     //           alt='Logo'  /></a></div>
     //     );
     // }
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+          try {
+            const response = await axios.get(`${baseUrl}/locations`); // Replace with your actual API endpoint
+            setCordinates(response.data);
+          } catch (error) {
+            console.error('Error fetching loccation:', error);
+          }
+        };
+    
+        fetchProjects();
+      }, []);
+      console.log(coordinates)
   return (
     <Layout>
         <LoadScript>
     <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={center}
-            zoom={15}
+            zoom={9}
           >
       
-        {gpsCoordinates.map((coordinate, index) => 
+        {coordinates.map((coordinate, index) => 
           <Marker
             position={coordinate}
             lat = {coordinate.lat}

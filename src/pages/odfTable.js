@@ -5,7 +5,7 @@ import { baseUrl } from '../services/https';
 import Layout from '../components/Layout'
 
 
-const ProjectsPage = () => {
+const ODFPage = () => {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 100; // Adjust as needed
@@ -17,7 +17,7 @@ const [titleOptions] = useState(['HPBH','SMBH','FLBH', 'HPBH']);
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/projects`); // Replace with your actual API endpoint
+        const response = await axios.get(`${baseUrl}/odf`); // Replace with your actual API endpoint
         setProjects(response.data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -51,79 +51,26 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
   return (
     <Layout>
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Projects</h2>
+      <h2 className="text-2xl font-bold mb-4">ODF Status</h2>
       {/* <Link 
         to="/projects/new" 
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
       >
         Add New Project
       </Link> */}
-      <div className="mb-4">
-        <label htmlFor="searchTitle" className="block text-sm font-medium text-gray-700">
-            Search by Title
-        </label>
-        <select
-            id="status"
-            value={searchTitle}
-            onChange={(e) => setSearchTitle(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        >
-            {titleOptions.map((title) => (
-            <option key={title} value={title}>
-                {title}
-            </option>
-            ))}
-        </select>
-        {/* <input
-            type="text"
-            id="searchTitle"
-            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={searchTitle}
-            onChange={(e) => setSearchTitle(e.target.value)}
-        /> */}
-        </div>
-
-        <div className="mb-4">
-        <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-            Status
-        </label>
-        <select
-            id="status"
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        >
-            {statusOptions.map((status) => (
-            <option key={status} value={status}>
-                {status}
-            </option>
-            ))}
-        </select>
-        </div>
+      
 
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              FACILITY
-            </th>
-            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Community
-            </th>
-            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Ward
-            </th>
-            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               LGA
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              contractor
+              No of Communities
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              %
-            </th>
-            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Status
+              No of Certified Communities
             </th>
             <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               Actions
@@ -131,31 +78,8 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {currentProjects.map((project) => (
+          {projects.map((project) => (
             <tr key={project.id}>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">
-                  {project.title === 'HPBH' 
-                  ? 'Handpump Borehole'
-                    :project.title === 'SMBH'
-                    ? 'Solar Motorized Borehole'
-                    :project.title === 'VIP'
-                    ? 'VIP Laterines'
-                    :project.title === 'FLBH'
-                    ? 'Forcelift Borehole':
-                    project.title   }
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {project.community}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {project.ward}
-                </span>
-              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
                   {project.lga}
@@ -163,25 +87,21 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {project.contractor}
+                  {project.no_of_communities}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {project.coverage}
+                  {project.no_of_certified}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                  {project.status}
-                </span>
-              </td>
+              
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <Link
-                  to={`/projects/${project.id}`}
+                  to={`/`}
                   className="text-blue-600 hover:text-blue-900 mr-2"
                 >
-                  View
+                  more
                 </Link>
                 {/* <Link
                   to={`/projects/${project.id}/edit`}
@@ -226,4 +146,4 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
   );
 };
 
-export default ProjectsPage;
+export default ODFPage;

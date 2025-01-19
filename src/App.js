@@ -12,6 +12,9 @@ import AddProjectPage from './pages/addNewProject';
 import DailyMap from './pages/dailyMap';
 import AllMap from './pages/allmaps';
 import ODFMap from './pages/odfMap';
+import AddOdf from './pages/addodfdata';
+import ODFPage from './pages/odfTable';
+import ProjectDetailsPageAdmin from './pages/pdetails';
 
 
 function App() {
@@ -25,11 +28,13 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/new" element={<AddProjectPage />} />
             <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
+            <Route path="/projects/admin/:projectId" element={<ProjectDetailsPageAdmin />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/map" element={<DailyMap />} />
             <Route path="/maps" element={<AllMap />} />
             <Route path="/odf" element={<ODFMap />} />
-
+            <Route path="/odf/add" element={<AddOdf />} />
+            <Route path="/odf/status" element={<ODFPage />} />
 
           </Routes>
         </div>
