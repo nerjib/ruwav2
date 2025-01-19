@@ -11,6 +11,7 @@ import ProjectDetailsPage from './pages/projectsDetails';
 import AddProjectPage from './pages/addNewProject';
 import DailyMap from './pages/dailyMap';
 import AllMap from './pages/allmaps';
+import ODFMap from './pages/odfMap';
 
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/map" element={<DailyMap />} />
             <Route path="/maps" element={<AllMap />} />
+            <Route path="/odf" element={<ODFMap />} />
+
 
           </Routes>
         </div>
