@@ -73,8 +73,8 @@ const ProjectDetailsPageAdmin = () => {
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
-      formData.append('latitude', lat);
-      formData.append('longitude', long);
+      formData.append('latitude', Number(lat));
+      formData.append('longitude', Number(long));
 
       const response = await axios.put(`${baseUrl}/project/gps/${projectId}`,
         {
@@ -98,16 +98,16 @@ const ProjectDetailsPageAdmin = () => {
   };
 
   return (
-    <Layout>
     <div>
       <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
       <p>Community: {project.community}</p>
       <p>Ward: {project.ward}</p>
       <p>LGA: {project.lga}</p>
       <p>Contractor: {project.contractor}</p>
+      <p>Lot: {project.lot}</p>
       <p>Status: {project.status}</p>
-      <p>longitude <input value={long ?? project.longitude} onChange={(e) => setLong(e.target.value)} /></p>
-      <p>latitude <input value={lat ?? project.latitude} onChange={(e) => setLat(e.target.value)} /></p>
+      <p>longitude <input type='number' value={long ?? project.longitude} onChange={(e) => setLong(e.target.value)} /></p>
+      <p>latitude <input type='number' value={lat ?? project.latitude} onChange={(e) => setLat(e.target.value)} /></p>
       <button 
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
         onClick={() => handleUpdate()}
@@ -184,7 +184,6 @@ const ProjectDetailsPageAdmin = () => {
         </Modal.Footer>
       </Modal>
     </div>
-    </Layout>
   );
 };
 

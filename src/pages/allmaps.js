@@ -64,7 +64,7 @@ const [coordinates, setCordinates] = useState([]);
             lng = {coordinate.lng}
             text = {coordinate.title}
             id= {coordinate.id ?? 1}
-            icon={coordinate.title ==='hpbh' ? hpbhIcon : coordinate.title === 'smbh' ? smbIcon : {
+            icon={coordinate.title ==='HPBH' ? hpbhIcon : coordinate.title === 'SMBH' ? smbIcon : {
                 url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
               }}
               

@@ -108,6 +108,9 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
               FACILITY
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              LOT
+            </th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Community
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -145,6 +148,11 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
                     ? 'Forcelift Borehole':
                     project.title   }
                 </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                  {project.lot}
+                </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">

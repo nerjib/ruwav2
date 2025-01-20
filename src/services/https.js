@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { NotificationManager } from 'react-notifications';
 
-export const baseUrl = 'http://localhost:5001/api/v1/ruwassa';
+export const baseUrl1 = 'http://localhost:5001/api/v1/ruwassa';
+export const baseUrl = 'https://ruwassa-69889b243ddb.herokuapp.com/api/v1/ruwassa';
+
 
 
 
@@ -26,7 +28,6 @@ export const httpPost = async (url, postBody, isNotAuth) => {
             'content-type': 'application/json',
             'CLIENT-TYPE': CLIENT_TYPE,
             'CLIENT-ID': CLIENT_ID,
-            Authorization: `${localStorage.token}`
           },
         }
     );

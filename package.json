@@ -9,6 +9,7 @@
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "cra-template": "1.2.0",
+    "fs": "^0.0.1-security",
     "google-map-react": "^1.1.7",
     "leaflet": "^1.9.4",
     "pdf-lib": "^1.17.1",
