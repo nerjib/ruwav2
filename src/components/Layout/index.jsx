@@ -12,9 +12,15 @@ const Index = (props) => {
   const { children } = props;
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const userRole = JSON.parse(localStorage.getItem('userDetails'))?.user?.role;
 
 
-
+  useEffect(() => {
+    // console.log('userDetails', localStorage.getItem('userDetails'))
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
+  }, []);
 
   const onCollapse = (collapsed) => {
     console.log(collapsed);
@@ -24,23 +30,38 @@ const Index = (props) => {
     {title: 'Analytics',
         url: '/',
         icon: '',
+        visibility: true,
     },
     {title: 'Projects',
         url: '/projects',
         icon: '',
+        visibility: true,
     },
     {title: 'Reports',
         url: '/reports',
         icon: '',
+        visibility: true,
+    },
+    {title: 'Users',
+      url: '/users',
+        icon: '',
+      visibility: userRole === 'super_admin',
     },
     {title: 'Map',
         url: '/maps',
         icon: '',
+        visibility: true,
     },
     {title: 'ODF',
         url: '/odf',
         icon: '',
-    }
+        visibility: true,
+    },
+    {title: 'Logout',
+        url: '/logout',
+        icon: '',
+        visibility: true,
+    },
   ];
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -80,7 +101,7 @@ const Index = (props) => {
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["sub1"]}
         >
-          {menuData.map((item) => {
+          {menuData.filter((e) => e.visibility).map((item) => {
             if (item.children) {
               return (
                 <SubMenu key={item.key} title={item.title} icon={item.icon}>
@@ -100,7 +121,14 @@ const Index = (props) => {
             return (
               <Menu.Item
                 key={item.key}
-                onClick={() => navigate(item.url)}
+                onClick={() => {
+                  if (item.url === "/logout") {
+                    localStorage.clear();
+                    navigate("/login");
+                  } else  {
+                  navigate(item.url)
+                  }
+                }}
                 icon={item.icon}
               >
                 {item.title}

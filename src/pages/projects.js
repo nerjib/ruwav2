@@ -6,6 +6,7 @@ import Layout from '../components/Layout'
 
 
 const ProjectsPage = () => {
+  const role = JSON.parse(localStorage.getItem('userDetails'))?.user?.role;
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 100; // Adjust as needed
@@ -52,12 +53,15 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
     <Layout>
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Projects</h2>
-      {/* <Link 
+      {role === 'super_admin' &&
+      <div className="mb-4 text-right">
+      <Link 
         to="/projects/new" 
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4 rounded mb-4"
       >
         Add New Project
-      </Link> */}
+      </Link>
+      </div>}
       <div className="mb-4">
         <label htmlFor="searchTitle" className="block text-sm font-medium text-gray-700">
             Search by Title

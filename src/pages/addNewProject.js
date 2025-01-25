@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../services/https';
+import Swal from 'sweetalert2';
 
 const AddProjectPage = () => {
   const [name, setName] = useState('');
@@ -14,6 +15,11 @@ const AddProjectPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const role = JSON.parse(localStorage.getItem('userDetails'))?.user?.role;
+    if(role !== 'super_admin'){
+      Swal.fire('Oops...','You do not have the permission to perform this action');
+      return;
+    }
 
     try {
       const formData = new FormData();

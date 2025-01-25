@@ -15,6 +15,9 @@ import ODFMap from './pages/odfMap';
 import AddOdf from './pages/addodfdata';
 import ODFPage from './pages/odfTable';
 import ProjectDetailsPageAdmin from './pages/pdetails';
+import RegisterPage from './pages/signup';
+import LoginPage from './pages/signin';
+import UsersPage from './pages/users';
 
 
 function App() {
@@ -35,7 +38,9 @@ function App() {
             <Route path="/odf" element={<ODFMap />} />
             <Route path="/odf/add" element={<AddOdf />} />
             <Route path="/odf/status" element={<ODFPage />} />
-
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/users" element={<UsersPage />} />
           </Routes>
         </div>
       </div>

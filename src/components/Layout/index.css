@@ -15,11 +15,11 @@
   
   .ant-menu-item-selected {
     background-color: #fdece5 !important;
-    color: #ff6700 !important;
+    color: #00a2ff !important;
   }
   
   .ant-menu-item-selected .ant-menu-title-content {
-    color: #ff6700 !important;
+    color: #00a2ff !important;
   }
   
   .ant-menu-title-content {
@@ -39,6 +39,6 @@
   }
   
   .ant-layout-sider-trigger {
-    background: #ff6700 !important;
+    background: #00a2ff !important;
   }
   

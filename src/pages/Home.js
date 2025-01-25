@@ -107,10 +107,10 @@ const HomePage = () => {
   return (
     <Layout>
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Welcome to the Project Management Dashboard</h1>
-      <p className="text-lg mb-4">
+      <h1 className="text-3xl font-bold mb-4">Kaduna RUWASSA Project Management Dashboard</h1>
+      {/* <p className="text-lg mb-4">
         This dashboard helps you track and manage all your projects in one place.
-      </p>
+      </p> */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Example: Quick Stats (replace with actual data) */}
