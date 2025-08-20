@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, GeoJSON } from "react-leaflet";
 import Layout from '../components/Layout'
 import MapData from './kad.json'
-import { baseUrl } from "../services/https";
+import { baseUrl, httpGet } from "../services/https";
 import axios from "axios";
 // import fs from 'fs'
 const jsonDataBefore = require('./kad.json');
@@ -28,10 +28,10 @@ const ODFMap = () => {
     useEffect(() => {
         const fetchProjects = async () => {
           try {
-            const response = await axios.get(`${baseUrl}/odf`); // Replace with your actual API endpoint
+            const response = await httpGet(`/odf/odf`); // Replace with your actual API endpoint
             // setProjects(response.data);
             let data ={};
-            response?.data?.map(e=> {
+            response?.map(e=> {
                 console.log({e})
                 data = {...data, [e?.lga]: Math.floor((e?.no_of_certified/e?.no_of_communities)*100) }
             })

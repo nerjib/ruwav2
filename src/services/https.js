@@ -1,17 +1,10 @@
-import axios from 'axios';
 import { NotificationManager } from 'react-notifications';
-
-export const baseUrl1 = 'http://localhost:5001/api/v1/ruwassa';
-export const baseUrl = 'https://ruwassa-69889b243ddb.herokuapp.com/api/v1/ruwassa';
-
-
-
-
+import api from './api';
 
 const CLIENT_TYPE = 'RUWASSA';
 const CLIENT_ID = 'WATER';
 
-export const httpPost = async (url, postBody, isNotAuth) => {
+export const httpPost = async (url, postBody) => {
   if (!navigator.onLine) {
     return NotificationManager.error(
       'Please check your internet',
@@ -20,20 +13,14 @@ export const httpPost = async (url, postBody, isNotAuth) => {
     );
   }
   try {
-    const res = await axios.post(
-      `${url}`,
-      postBody,
-      {
-          headers: {
-            'content-type': 'application/json',
-            'CLIENT-TYPE': CLIENT_TYPE,
-            'CLIENT-ID': CLIENT_ID,
-          },
-        }
-    );
+    const res = await api.post(url, postBody, {
+      headers: {
+        'CLIENT-TYPE': CLIENT_TYPE,
+        'CLIENT-ID': CLIENT_ID,
+      },
+    });
     return res.data;
   } catch (error) {
-    
     if (error?.response?.data.error === 'Internal Server Error') {
       return {
         status: false,
@@ -50,12 +37,7 @@ export const httpPost = async (url, postBody, isNotAuth) => {
   }
 };
 
-export const httpPostUnreloaded = async (
-  url,
-  postBody,
-  otherUrl,
-  isNotAuth
-) => {
+export const httpGet = async (url) => {
   if (!navigator.onLine) {
     return NotificationManager.error(
       'Please check your internet',
@@ -64,74 +46,25 @@ export const httpPostUnreloaded = async (
     );
   }
   try {
-    const res = await axios.post(
-      `${url}`,
-      postBody,
-      {}
-    );
-    // console.log(res);
+    const res = await api.get(url, {
+      headers: {
+        'CLIENT-TYPE': CLIENT_TYPE,
+        'CLIENT-ID': CLIENT_ID,
+      },
+    });
     return res.data;
   } catch (error) {
-    
-    return error.response?.data;
-  }
-};
-
-export const httpPostFormData = async (url, postBody, otherUrl, isNotAuth) => {
-  if (!navigator.onLine) {
-    return NotificationManager.error(
-      'Please check your internet',
-      'Oops!',
-      3000
-    );
-  }
-  try {
-    const res = await axios.post(
-      `${url}`,
-      postBody,
-      {}
-    );
-    // console.log(res);
-    return res.data;
-  } catch (error) {
-    
-    return error.response?.data;
-  }
-};
-
-export const httpGet = async (url, otherUrl, isNotAuth) => {
-  if (!navigator.onLine) {
-    return NotificationManager.error(
-      'Please check your internet',
-      'Oops!',
-      3000
-    );
-  }
-  try {
-    const res = await axios.get(
-      url,
-      {
-          headers: {
-            'CLIENT-TYPE': CLIENT_TYPE,
-            'CLIENT-ID': CLIENT_ID,
-          },
-        }
-    );
-    // console.log(res);
-    return res.data;
-  } catch (error) {
-    
     if (error?.response?.data?.message === 'Validation Errors') {
       Object.values(error?.response?.data?.data).map((item) =>
         console.log('Oops!', item, 'error')
       );
-      return error?.response?.data;;
+      return error?.response?.data;
     }
     return error?.response?.data;
   }
 };
 
-export const httpGetPdf = async (url, otherUrl, isNotAuth) => {
+export const httpPut = async (url, postBody) => {
   if (!navigator.onLine) {
     return NotificationManager.error(
       'Please check your internet',
@@ -140,42 +73,9 @@ export const httpGetPdf = async (url, otherUrl, isNotAuth) => {
     );
   }
   try {
-    const res = await axios.get(
-      url,
-      {}
-    );
-    // console.log(res);
+    const res = await api.put(url, postBody, {});
     return res.data;
   } catch (error) {
-    
-    if (error?.response?.data?.message === 'Validation Errors') {
-      Object.values(error?.response?.data?.data).map((item) =>
-        console.log('Oops!', item, 'error')
-      );
-      return error?.response?.data;;
-    }
-    return error?.response?.data;
-  }
-};
-
-export const httpPut = async (url, postBody, otherUrl, isNotAuth) => {
-  if (!navigator.onLine) {
-    return NotificationManager.error(
-      'Please check your internet',
-      'Oops!',
-      3000
-    );
-  }
-  try {
-    const res = await axios.put(
-      `${url}`,
-      postBody,
-      {}
-    );
-    // console.log(res);
-    return res.data;
-  } catch (error) {
-    
     if (error.response.data.message === 'Validation Errors') {
       return {
         status: false,
@@ -186,7 +86,7 @@ export const httpPut = async (url, postBody, otherUrl, isNotAuth) => {
   }
 };
 
-export const httpPatch = async (url, postBody, otherUrl, isNotAuth) => {
+export const httpPatch = async (url, postBody) => {
   if (!navigator.onLine) {
     return NotificationManager.error(
       'Please check your internet',
@@ -195,18 +95,14 @@ export const httpPatch = async (url, postBody, otherUrl, isNotAuth) => {
     );
   }
   try {
-    const res = await axios.patch(
-      `${url}`,
-      postBody,
-      {}
-    );
+    const res = await api.patch(url, postBody, {});
     return res.data;
   } catch (error) {
     return error.response?.data;
   }
 };
 
-export const httpDelete = async (url, data, otherUrl, isNotAuth) => {
+export const httpDelete = async (url, data) => {
   if (!navigator.onLine) {
     return NotificationManager.error(
       'Please check your internet',
@@ -215,14 +111,10 @@ export const httpDelete = async (url, data, otherUrl, isNotAuth) => {
     );
   }
   try {
-    const res = await axios.delete(
-      `${url}`,
-      {}
-    );
-    // console.log(res);
+    const res = await api.delete(url, {});
     return res.data;
   } catch (error) {
-    
     return error.response?.data;
   }
 };
+

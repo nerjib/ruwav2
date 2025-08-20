@@ -6,7 +6,7 @@ import smbIcon from '../assets/smbh.png'
 import Layout from '../components/Layout'
 import GoogleMapReact from 'google-map-react';
 import axios from 'axios';
-import { baseUrl } from '../services/https';
+import { baseUrl, httpGet } from '../services/https';
 
 const mapContainerStyle = {
   height: "400px",
@@ -38,7 +38,7 @@ const [coordinates, setCordinates] = useState([]);
     useEffect(() => {
         const fetchProjects = async () => {
           try {
-            const response = await axios.get(`${baseUrl}/locations`); // Replace with your actual API endpoint
+            const response = await httpGet(`/projects/locations`); // Replace with your actual API endpoint
             setCordinates(response.data);
           } catch (error) {
             console.error('Error fetching loccation:', error);
@@ -57,7 +57,7 @@ const [coordinates, setCordinates] = useState([]);
             zoom={9}
           >
       
-        {coordinates.map((coordinate, index) => 
+        {coordinates?.map((coordinate, index) => 
           <Marker
             position={coordinate}
             lat = {coordinate.lat}

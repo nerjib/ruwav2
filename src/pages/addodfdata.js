@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { baseUrl, httpPost } from '../services/https';
 import Layout from '../components/Layout'
 
 
@@ -23,7 +23,7 @@ const AddOdf = () => {
             no_of_certified: certified
         }
 
-      const response = await axios.post(`${baseUrl}/odf`, formData, {
+      const response = await httpPost(`/odf/odf`, formData, {
         headers: {
         },
       });

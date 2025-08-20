@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { httpGet } from '../services/https';
 import Layout from '../components/Layout'
 
 
@@ -18,8 +17,8 @@ const [titleOptions] = useState(['HPBH','SMBH','FLBH', 'HPBH']);
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/projects`); // Replace with your actual API endpoint
-        setProjects(response.data);
+        const response = await httpGet('/projects'); // Replace with your actual API endpoint
+        setProjects(response);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }

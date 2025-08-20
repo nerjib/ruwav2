@@ -33,9 +33,9 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/projects/stats`); // Replace with your actual API endpoint
-        setProjectData(response.data?.stat);
-        setChatData(response?.data?.projects)
+        const response = await httpGet(`/projects/stats`); // Replace with your actual API endpoint
+        setProjectData(response?.stat);
+        setChatData(response?.projects)
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -45,7 +45,7 @@ const HomePage = () => {
   }, []);
 
     const getProjects = async () => {
-        const res = await httpGet(`${baseUrl}/projects`)
+        const res = await httpGet(`/projects`)
         if ( res?.status) {
             setProjects(res.data);
         } else {
@@ -53,11 +53,11 @@ const HomePage = () => {
         }
     }
     const projectCounts = {
-        labels: projectData.map((data) => data.status),
+        labels: projectData?.map((data) => data.status),
         datasets: [
           {
             label: 'Project Status Counts',
-            data: projectData.map((data) => data.count),
+            data: projectData?.map((data) => data.count),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -80,11 +80,11 @@ const HomePage = () => {
       };
     
       const chatCounts = {
-        labels: chatData.map((data) => data.title),
+        labels: chatData?.map((data) => data.title),
         datasets: [
           {
             label: 'Chat Interactions',
-            data: chatData.map((data) => data.count),
+            data: chatData?.map((data) => data.count),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',

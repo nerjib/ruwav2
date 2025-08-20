@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { httpPost } from '../services/https';
 import ruwaLogo from "../../src/assets/192.png";
 
 const LoginPage = () => {
@@ -13,14 +12,14 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${baseUrl}/auth/login`, {
+      const response = await httpPost('/auth/login', {
         email,
         password,
       });
 
       // Store token in local storage (or use a secure token storage solution)
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userDetails', JSON.stringify(response.data)); 
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('userDetails', JSON.stringify(response)); 
       navigate('/'); // Redirect to dashboard after successful login
     } catch (error) {
       console.error('Login failed:', error);

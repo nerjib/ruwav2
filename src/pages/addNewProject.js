@@ -33,7 +33,7 @@ const AddProjectPage = () => {
         formData.append('excelFile', excelFile); 
       }
 
-      const response = await axios.post(`${baseUrl}/projects`, formData, {
+      const response = await axios.post(`/projects/projects`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

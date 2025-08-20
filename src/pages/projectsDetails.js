@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap'; // Import Modal from react-bootstrap
-import { baseUrl } from '../services/https';
+import { httpGet, httpPost } from '../services/https';
 import Layout from '../components/Layout'
 
 const ProjectDetailsPage = () => {
@@ -17,8 +17,8 @@ const ProjectDetailsPage = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/projects/${projectId}`);
-        setProject(response.data[0]);
+        const response = await httpGet(`/projects/${projectId}`);
+        setProject(response[0]);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -30,8 +30,8 @@ const ProjectDetailsPage = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/reports/${projectId}`);
-        setReports(response.data);
+        const response = await httpGet(`/reports/reports/${projectId}`);
+        setReports(response);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -54,7 +54,7 @@ const ProjectDetailsPage = () => {
       formData.append('report', selectedFile);
       formData.append('title', project?.title)
 
-      const response = await axios.post(`${baseUrl}/reports/${projectId}`, formData, {
+      const response = await httpPost(`/reports/reports/${projectId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -76,7 +76,7 @@ const ProjectDetailsPage = () => {
       formData.append('latitude', lat);
       formData.append('longitude', long);
 
-      const response = await axios.put(`${baseUrl}/project/gps/${projectId}`,
+      const response = await axios.put(`/projects/project/gps/${projectId}`,
         {
           longitude: long,
           latitude: lat
@@ -135,7 +135,7 @@ const ProjectDetailsPage = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {reports.map((project) => (
+          {reports?.map((project) => (
             <tr key={project.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">

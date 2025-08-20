@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { httpGet } from '../services/https';
 import Layout from '../components/Layout'
 
 
@@ -17,7 +16,7 @@ const [titleOptions]= useState(['HPBH', 'SMBH', 'VIP', 'FLBH'])
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/reports`); // Replace with your actual API endpoint
+        const response = await httpGet('/reports/reports'); // Replace with your actual API endpoint
         setProjects(response.data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -47,7 +46,7 @@ const [titleOptions]= useState(['HPBH', 'SMBH', 'VIP', 'FLBH'])
     );
 });
 // Get current projects to be displayed
-const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
+const currentProjects = filteredProjects?.slice(indexOfFirstProject, indexOfLastProject);
   return (
     <Layout>
     <div className="p-4">
@@ -112,7 +111,7 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {currentProjects.map((project) => (
+          {currentProjects?.length > 0 && currentProjects?.map((project) => (
             <tr key={project.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">
@@ -178,7 +177,7 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
         >
           Previous
         </button>
-        {Array.from({ length: Math.ceil(filteredProjects.length / projectsPerPage) }).map((_, index) => (
+        {Array.from({ length: Math.ceil(filteredProjects?.length / projectsPerPage) }).map((_, index) => (
           <button 
             key={index + 1} 
             onClick={() => paginate(index + 1)} 
@@ -189,7 +188,7 @@ const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastP
         ))}
         <button 
           onClick={() => paginate(currentPage + 1)} 
-          disabled={currentPage === Math.ceil(projects.length / projectsPerPage)} 
+          disabled={currentPage === Math.ceil(projects?.length / projectsPerPage)} 
           className="inline-flex items-center px-4 py-2 bg-gray-300 border border-gray-300 rounded-md hover:bg-gray-400"
         >
           Next

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap'; // Import Modal from react-bootstrap
-import { baseUrl } from '../services/https';
+import { httpGet, httpPost, httpPut } from '../services/https';
 import Layout from '../components/Layout'
 
 const ProjectDetailsPageAdmin = () => {
@@ -17,8 +17,8 @@ const ProjectDetailsPageAdmin = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/projects/${projectId}`);
-        setProject(response.data[0]);
+        const response = await httpGet(`/projects/${projectId}`);
+        setProject(response[0]);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -30,8 +30,8 @@ const ProjectDetailsPageAdmin = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/reports/${projectId}`);
-        setReports(response.data);
+        const response = await httpGet(`/reports/reports/${projectId}`);
+        setReports(response);
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -54,7 +54,7 @@ const ProjectDetailsPageAdmin = () => {
       formData.append('report', selectedFile);
       formData.append('title', project?.title)
 
-      const response = await axios.post(`${baseUrl}/reports/${projectId}`, formData, {
+      const response = await httpPost(`/reports/${projectId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -76,7 +76,7 @@ const ProjectDetailsPageAdmin = () => {
       formData.append('latitude', Number(lat));
       formData.append('longitude', Number(long));
 
-      const response = await axios.put(`${baseUrl}/project/gps/${projectId}`,
+      const response = await httpPut(`/projects/project/gps/${projectId}`,
         {
           longitude: long,
           latitude: lat

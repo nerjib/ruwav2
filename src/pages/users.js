@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { baseUrl } from '../services/https';
+import { httpGet } from '../services/https';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout'
 
@@ -14,8 +13,8 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/users`); // Replace with your actual API endpoint
-        setUsers(response.data);
+        const response = await httpGet('/users'); // Replace with your actual API endpoint
+        setUsers(response);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -31,7 +30,7 @@ const UsersPage = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
   // Get current users to be displayed
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = users?.slice(indexOfFirstUser, indexOfLastUser);
 
   // Function to handle page change
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -59,7 +58,7 @@ const UsersPage = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {currentUsers.map((user) => (
+          {currentUsers?.map((user) => (
             <tr key={user.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">
@@ -90,7 +89,7 @@ const UsersPage = () => {
         >
           Previous
         </button>
-        {Array.from({ length: Math.ceil(users.length / usersPerPage) }).map((_, index) => (
+        {Array.from({ length: Math.ceil(users?.length / usersPerPage) }).map((_, index) => (
           <button 
             key={index + 1} 
             onClick={() => paginate(index + 1)} 
@@ -101,7 +100,7 @@ const UsersPage = () => {
         ))}
         <button 
           onClick={() => paginate(currentPage + 1)} 
-          disabled={currentPage === Math.ceil(users.length / usersPerPage)} 
+          disabled={currentPage === Math.ceil(users?.length / usersPerPage)} 
           className="inline-flex items-center px-4 py-2 bg-gray-300 border border-gray-300 rounded-md hover:bg-gray-400"
         >
           Next

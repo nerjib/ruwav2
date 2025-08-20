@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { httpPost } from '../services/https';
 import Swal from 'sweetalert2';
 import Layout from '../components/Layout'
 
@@ -23,7 +22,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/auth/register`, {
+      const response = await httpPost('/auth/register', {
         full_name,
         email,
         password,
