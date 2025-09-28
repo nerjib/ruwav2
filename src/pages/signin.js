@@ -2,72 +2,70 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { httpPost } from '../services/https';
 import ruwaLogo from "../../src/assets/192.png";
+import { Form, Input, Button, Spin, Alert } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const onFinish = async (values) => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await httpPost('/auth/login', {
-        email,
-        password,
-      });
-
-      // Store token in local storage (or use a secure token storage solution)
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('userDetails', JSON.stringify(response)); 
-      navigate('/'); // Redirect to dashboard after successful login
+      const response = await httpPost('/auth/login', values);
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userDetails', JSON.stringify(response));
+        navigate('/');
+      } else {
+        setError(response.message || 'Login failed. Please check your credentials.');
+      }
     } catch (error) {
+      setError('An error occurred. Please try again.');
       console.error('Login failed:', error);
-      // Handle error (e.g., display error message to the user)
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="p-4 w-full max-w-md mx-auto">
-        <div className="mb-4 w-2/3 mx-auto border text-center px-5 card">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <div className="text-center">
-        <img src={ruwaLogo} alt="logo" width={100} height={100} className="mx-auto" />
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f0f2f5' }}>
+      <div style={{ width: 400, padding: '40px', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <img src={ruwaLogo} alt="logo" style={{ height: '80px', marginBottom: '16px', display: 'block', margin: '0 auto' }} />
+          <h2>RUWASSA Dashboard</h2>
         </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4 text-left">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4 text-left">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 24 }} />} 
+        <Form
+          name="normal_login"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
         >
-          Login
-        </button>
-      </form>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: 'Please input your Email!' }, { type: 'email', message: 'The input is not valid E-mail!' }]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="Email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your Password!' }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={loading}>
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

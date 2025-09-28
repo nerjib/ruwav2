@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { baseUrl } from '../services/https';
+import { baseUrl, httpPost, httpPostFormData } from '../services/https';
 import Swal from 'sweetalert2';
 
 const AddProjectPage = () => {
@@ -16,7 +16,7 @@ const AddProjectPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const role = JSON.parse(localStorage.getItem('userDetails'))?.user?.role;
-    if(role !== 'super_admin'){
+    if(role !== 'super_admin' && role !== 'admin'){
       Swal.fire('Oops...','You do not have the permission to perform this action');
       return;
     }
@@ -33,14 +33,18 @@ const AddProjectPage = () => {
         formData.append('excelFile', excelFile); 
       }
 
-      const response = await axios.post(`/projects/projects`, formData, {
+      const response = await httpPostFormData(`/projects`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      if (!response.error) {
+      Swal.fire('Done', 'Project uploaded successfully', 'success');
       console.log('Project created successfully:', response.data);
       navigate('/projects'); // Redirect to projects page after successful creation
+      }else {
+        Swal.fire('Error', response.error, 'error');
+      }
     } catch (error) {
       console.error('Error creating project:', error);
       // Handle error (e.g., display error message to user)

@@ -9,8 +9,8 @@ import axios from 'axios';
 import { baseUrl, httpGet } from '../services/https';
 
 const mapContainerStyle = {
-  height: "400px",
-  width: "800px"
+  height: "800px",
+  width: "1600px"
 };
 
 const center = {
@@ -39,7 +39,8 @@ const [coordinates, setCordinates] = useState([]);
         const fetchProjects = async () => {
           try {
             const response = await httpGet(`/projects/locations`); // Replace with your actual API endpoint
-            setCordinates(response.data);
+            // console.log({response})
+            setCordinates(response);
           } catch (error) {
             console.error('Error fetching loccation:', error);
           }
@@ -50,7 +51,7 @@ const [coordinates, setCordinates] = useState([]);
       console.log(coordinates)
   return (
     <Layout>
-        <LoadScript>
+        <LoadScript googleMapsApiKey="AIzaSyD8p6R-nBw25pztXCmVe936auoaXbBX9bU">
     <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={center}

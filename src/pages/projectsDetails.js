@@ -30,8 +30,13 @@ const ProjectDetailsPage = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await httpGet(`/reports/reports/${projectId}`);
-        setReports(response);
+        const response = await httpGet(`/reports/${projectId}`);
+        if (response && Array.isArray(response.data)) {
+          setReports(response.data);
+        } else if (response && Array.isArray(response)) {
+          setReports(response);
+        }
+        // console.log({response})
       } catch (error) {
         console.error('Error fetching project:', error);
       }
@@ -135,16 +140,16 @@ const ProjectDetailsPage = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {reports?.map((project) => (
-            <tr key={project.id}>
+          {reports?.length > 0 ? reports?.map((project) => (
+            <tr key={project?.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">
-                  {project.filename}
+                  {project?.filename}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <Link
-                  to={project.file_url.substr(0, project.file_url.lastIndexOf(".")) + ".png"}
+                  to={project?.file_url?.substr(0, project?.file_url?.lastIndexOf(".")) + ".png"}
                   className="text-blue-600 hover:text-blue-900 mr-2"
                   target='_blank'
                 >
@@ -152,7 +157,7 @@ const ProjectDetailsPage = () => {
                 </Link>
               </td>
             </tr>
-          ))}
+          )) : ''}
         </tbody>
       </table>
 

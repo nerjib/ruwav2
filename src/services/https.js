@@ -1,5 +1,6 @@
 import { NotificationManager } from 'react-notifications';
 import api from './api';
+import axios from 'axios';
 
 const CLIENT_TYPE = 'RUWASSA';
 const CLIENT_ID = 'WATER';
@@ -82,6 +83,33 @@ export const httpPut = async (url, postBody) => {
         message: error.response?.data.data[0],
       };
     }
+    return error.response?.data;
+  }
+};
+
+export const httpPostFormData = async (url, postBody) => {
+  if (!navigator.onLine) {
+    return NotificationManager.error(
+      'Please check your internet',
+      'Oops!',
+      3000
+    );
+  }
+  try {
+    const res = await api.post(url,
+      postBody,
+       {
+            headers: {
+              Authorization: `Bearer ${localStorage.token}`,
+              'Content-Type': 'multipart/form-data',
+              'CLIENT-TYPE': CLIENT_TYPE,
+              'CLIENT-ID': CLIENT_ID,
+            },
+          }
+    );
+    // console.log(res);
+    return res.data;
+  } catch (error) {
     return error.response?.data;
   }
 };
