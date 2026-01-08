@@ -60,6 +60,7 @@ const [coordinates, setCordinates] = useState([]);
       
         {coordinates?.map((coordinate, index) => 
           <Marker
+            onClick={() => (window.location.href = `/#/projects/${coordinate.id}`)}
             position={coordinate}
             lat = {coordinate.lat}
             lng = {coordinate.lng}
